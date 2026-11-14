@@ -5,12 +5,26 @@
   "description": "Marketing site for Calico Media",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
-    "express": "^4.22.3"
-  }
+    "dotenv": "^18.0.10",
+    "express": "^4.22.3",
+    "nodemailer": "^10.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ferrante-dev/Ferrante-Work-Experience-1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ferrante-dev/Ferrante-Work-Experience-1/issues"
+  },
+  "homepage": "https://github.com/ferrante-dev/Ferrante-Work-Experience-1#readme"
 }

@@ -1,35 +1,44 @@
-const form = document.getElementById('contact-form');
-const statusEl = document.getElementById('form-status');
+const contactForm = document.querySelector("#contact-form");
+const contactStatus = document.querySelector("#form-status");
 
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
+if (contactForm && contactStatus) {
+  contactForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-  const button = form.querySelector('button[type="submit"]');
-  button.disabled = true;
-  statusEl.textContent = '';
-  statusEl.className = 'form-status';
+    const submitButton = contactForm.querySelector('button[type="submit"]');
 
-  const data = Object.fromEntries(new FormData(form));
+    submitButton.disabled = true;
+    contactStatus.textContent = "";
+    contactStatus.className = "form-status";
 
-  try {
-    const response = await fetch('/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    const result = await response.json();
+    try {
+      const formData = new FormData(contactForm);
 
-    if (!result.ok) {
-      throw new Error(result.error || 'Something went wrong.');
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        body: new URLSearchParams(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error("Submission failed");
+      }
+
+      contactStatus.textContent = data.message;
+      contactStatus.classList.add("form-status--success");
+
+      contactForm.reset();
+    } catch (error) {
+      contactStatus.textContent =
+        "Sorry, your message could not be sent. Please try again.";
+
+      contactStatus.classList.add("form-status--error");
+    } finally {
+      submitButton.disabled = false;
     }
-
-    form.reset();
-    statusEl.textContent = "Thanks, we'll be in touch within one business day.";
-    statusEl.classList.add('form-status--success');
-  } catch (error) {
-    statusEl.textContent = error.message || 'Something went wrong. Please email hello@calicomedia.co instead.';
-    statusEl.classList.add('form-status--error');
-  } finally {
-    button.disabled = false;
-  }
-});
+  });
+}
